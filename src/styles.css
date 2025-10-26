@@ -245,12 +245,7 @@ h1 {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .board {
-    grid-template-columns: repeat(3, 20vw) !important;
-    grid-template-rows: repeat(3, 20vw) !important;
-  }
-  
   .square h4 {
-    font-size: 2em;
+    font-size: 1.5em;
   }
 }

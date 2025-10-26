@@ -28,8 +28,8 @@ function App() {
     if (winResult) {
       setGameOver(true);
       setWinner(winResult);
-      if (winResult === "X") setXWins(xWins + 1);
-      if (winResult === "O") setOWins(oWins + 1);
+      if (winResult === "X") setXWins((prev) => prev + 1);
+      if (winResult === "O") setOWins((prev) => prev + 1);
       return;
     }
 
@@ -61,7 +61,7 @@ function App() {
       if (winResult) {
         setGameOver(true);
         setWinner(winResult);
-        if (winResult === "O") setOWins(oWins + 1);
+        if (winResult === "O") setOWins((prev) => prev + 1);
         return;
       }
 
