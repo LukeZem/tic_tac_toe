@@ -26,7 +26,7 @@ const Board = ({ board, boardSize, onSquareClick, gameOver }) => {
 };
 
 Board.propTypes = {
-  board: PropTypes.array.isRequired,
+  board: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.null])).isRequired,
   boardSize: PropTypes.number.isRequired,
   onSquareClick: PropTypes.func.isRequired,
   gameOver: PropTypes.bool.isRequired,
