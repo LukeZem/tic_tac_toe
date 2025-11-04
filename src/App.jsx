@@ -126,9 +126,9 @@ function App() {
 
     for (let i = 0; i < board.length; i++) {
       if (board[i] === null) {
-        board[i] = "O";
-        const score = minimax(board, size, 0, false);
-        board[i] = null;
+        const testBoard = [...board];
+        testBoard[i] = "O";
+        const score = minimax(testBoard, size, 0, false);
         if (score > bestScore) {
           bestScore = score;
           bestMove = i;
