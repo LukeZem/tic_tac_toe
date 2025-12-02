@@ -27,7 +27,7 @@ It's tic-tac-toe. You know, that game you played on paper in elementary school w
 
 1. Clone this repository
 ```bash
-git clone https://github.com/LukeZem/tic_tac_toe.git
+git clone <your-repo-url>
 cd tic_tac_toe
 ```
 
