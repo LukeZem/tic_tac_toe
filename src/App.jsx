@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "./components/Header";
 import Player from "./components/Player";
 import Board from "./components/Board";
@@ -16,9 +16,10 @@ function App() {
   const [winner, setWinner] = useState(null);
   const [xWins, setXWins] = useState(0);
   const [oWins, setOWins] = useState(0);
+  const aiProcessing = useRef(false);
 
   const handleSquareClick = (index) => {
-    if (board[index] || gameOver) return;
+    if (board[index] || gameOver || aiProcessing.current) return;
 
     const newBoard = [...board];
     newBoard[index] = currentPlayer;
@@ -44,6 +45,7 @@ function App() {
 
     // AI move
     if (gameMode === "ai" && nextPlayer === "O") {
+      aiProcessing.current = true;
       setTimeout(() => {
         makeAIMove(newBoard, boardSize);
       }, 300);
@@ -51,6 +53,12 @@ function App() {
   };
 
   const makeAIMove = (currentBoard, size) => {
+    // Check if game is already over before making AI move
+    if (gameOver) {
+      aiProcessing.current = false;
+      return;
+    }
+
     const aiMove = getBestMove(currentBoard, size);
     if (aiMove !== -1) {
       const newBoard = [...currentBoard];
@@ -62,16 +70,21 @@ function App() {
         setGameOver(true);
         setWinner(winResult);
         if (winResult === "O") setOWins((prev) => prev + 1);
+        aiProcessing.current = false;
         return;
       }
 
       if (newBoard.every((square) => square !== null)) {
         setGameOver(true);
         setWinner("TIE");
+        aiProcessing.current = false;
         return;
       }
 
       setCurrentPlayer("X");
+      aiProcessing.current = false;
+    } else {
+      aiProcessing.current = false;
     }
   };
 
@@ -171,6 +184,7 @@ function App() {
   };
 
   const handleNewGame = (mode, size) => {
+    aiProcessing.current = false;
     setGameMode(mode);
     setBoardSize(size);
     setBoard(Array(size * size).fill(null));
@@ -180,6 +194,7 @@ function App() {
   };
 
   const handleNewGameSetup = () => {
+    aiProcessing.current = false;
     setBoard(Array(boardSize * boardSize).fill(null));
     setCurrentPlayer("X");
     setGameOver(false);
@@ -188,6 +203,7 @@ function App() {
   };
 
   const handleResetBoard = () => {
+    aiProcessing.current = false;
     setBoard(Array(boardSize * boardSize).fill(null));
     setCurrentPlayer("X");
     setGameOver(false);
@@ -195,6 +211,7 @@ function App() {
   };
 
   const handleFullReset = () => {
+    aiProcessing.current = false;
     setGameMode(null);
     setBoardSize(3);
     setBoard(Array(9).fill(null));
