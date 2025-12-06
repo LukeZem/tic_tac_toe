@@ -1,54 +1,35 @@
-import { useState } from "react";
 import Square from "../Square";
+import PropTypes from "prop-types";
 
-const Board = (props) => {
-  const [values, setValues] = useState([
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ]);
-
-  const [player, setPlayer] = useState("X");
-
-  const uniqueIds = [
-    "id_1",
-    "id_2",
-    "id_3",
-    "id_4",
-    "id_5",
-    "id_6",
-    "id_7",
-    "id_8",
-    "id_9",
-  ];
-
-  const handleClick = (indexOfClicked) => {
-    console.log("square clicked", indexOfClicked);
-    let copyOfState = [...values];
-    copyOfState[indexOfClicked] = player;
-    setValues(copyOfState);
-    let newPlayer = player === "X" ? "O" : "X";
-    setPlayer(newPlayer);
+const Board = ({ board, boardSize, onSquareClick, gameOver }) => {
+  const gridStyle = {
+    gridTemplateColumns: `repeat(${boardSize}, 15vw)`,
+    gridTemplateRows: `repeat(${boardSize}, 15vw)`,
   };
 
-  const squaresJSX = values.map((valueString, index) => {
+  const squaresJSX = board.map((value, index) => {
     return (
       <Square
-        value={valueString}
-        handleClick={handleClick}
-        key={uniqueIds}
-        index={index}
+        value={value}
+        handleClick={() => onSquareClick(index)}
+        key={index}
+        disabled={gameOver}
       />
     );
   });
 
-  return <div className="board">{squaresJSX}</div>;
+  return (
+    <div className="board" style={gridStyle}>
+      {squaresJSX}
+    </div>
+  );
+};
+
+Board.propTypes = {
+  board: PropTypes.arrayOf(PropTypes.string).isRequired,
+  boardSize: PropTypes.number.isRequired,
+  onSquareClick: PropTypes.func.isRequired,
+  gameOver: PropTypes.bool.isRequired,
 };
 
 export default Board;
